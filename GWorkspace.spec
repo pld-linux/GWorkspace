@@ -8,6 +8,7 @@ Group:		X11/Applications
 Source0:	http://www.gnustep.it/enrico/gworkspace/gworkspace-%{version}.tar.gz
 # Source0-md5:	bef75bb09fc11b7c437bfe8abeb0c602
 Patch0:		%{name}-link.patch
+Patch1:		%{name}-initWithArguments.patch
 URL:		http://www.gnustep.it/enrico/gworkspace/
 BuildRequires:	gnustep-gui-devel >= 0.8.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -47,6 +48,7 @@ Pliki nag³ówkowe GWorkspace.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 find . -type d -name CVS | xargs rm -rf
 
@@ -110,7 +112,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.desktop
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.plist
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.tiff
-%{_prefix}/System/Applications/GWorkspace.app/Resources/*.gorm
+#%{_prefix}/System/Applications/GWorkspace.app/Resources/*.gorm
 %lang(nl) %{_prefix}/System/Applications/GWorkspace.app/Resources/Dutch.lproj
 %{_prefix}/System/Applications/GWorkspace.app/Resources/English.lproj
 %lang(fr) %{_prefix}/System/Applications/GWorkspace.app/Resources/French.lproj
@@ -121,10 +123,11 @@ rm -rf $RPM_BUILD_ROOT
 %lang(es) %{_prefix}/System/Applications/GWorkspace.app/Resources/Spanish.lproj
 %dir %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer
 %dir %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources
-%{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/*.gorm
+%{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/Resources/English.lproj/*.gorm
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/*.plist
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/*.tiff
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/English.lproj
+%{_prefix}/System/Library/Bundles/*.viewer/Resources/Resources/English.lproj/*.gorm
 %attr(755,root,root) %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/%{gscpu}
 %dir %{_prefix}/System/Applications/GWorkspace.app/%{gscpu}
 %dir %{_prefix}/System/Applications/GWorkspace.app/%{gscpu}/%{gsos}
