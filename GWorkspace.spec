@@ -2,7 +2,7 @@ Summary:	Workspace manager for GNUstep
 Summary(pl):	Zarz±dca biurek dla GNUstepa
 Name:		GWorkspace
 Version:	0.6.5
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://www.gnustep.it/enrico/gworkspace/gworkspace-%{version}.tar.gz
@@ -110,6 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.desktop
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.plist
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.tiff
+%{_prefix}/System/Applications/GWorkspace.app/Resources/*.gorm
 %lang(nl) %{_prefix}/System/Applications/GWorkspace.app/Resources/Dutch.lproj
 %{_prefix}/System/Applications/GWorkspace.app/Resources/English.lproj
 %lang(fr) %{_prefix}/System/Applications/GWorkspace.app/Resources/French.lproj
@@ -120,6 +121,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(es) %{_prefix}/System/Applications/GWorkspace.app/Resources/Spanish.lproj
 %dir %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer
 %dir %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources
+%{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/*.gorm
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/*.plist
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/*.tiff
 %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/English.lproj
