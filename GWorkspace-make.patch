@@ -1,0 +1,10 @@
+diff -urN GWorkspace-0.6.5.org/FSNode/GNUmakefile GWorkspace-0.6.5/FSNode/GNUmakefile
+--- GWorkspace-0.6.5.org/FSNode/GNUmakefile	2004-05-29 12:05:35.000000000 +0200
++++ GWorkspace-0.6.5/FSNode/GNUmakefile	2005-09-06 22:59:12.336481592 +0200
+@@ -1,6 +1,4 @@
+ 
+-GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
+-
+ GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_SYSTEM_ROOT)
+ 
+ include $(GNUSTEP_MAKEFILES)/common.make
