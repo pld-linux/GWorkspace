@@ -2,7 +2,7 @@ Summary:	Workspace manager for GNUstep
 Summary(pl):	Zarz±dca biurek dla GNUstepa
 Name:		GWorkspace
 Version:	0.6.5
-Release:	4
+Release:	5
 License:	GPL
 Group:		X11/Applications
 Source0:	http://www.gnustep.it/enrico/gworkspace/gworkspace-%{version}.tar.gz
