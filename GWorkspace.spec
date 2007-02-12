@@ -1,5 +1,5 @@
 Summary:	Workspace manager for GNUstep
-Summary(pl):	Zarz±dca biurek dla GNUstepa
+Summary(pl.UTF-8):   ZarzÄ…dca biurek dla GNUstepa
 Name:		GWorkspace
 Version:	0.6.5
 Release:	6
@@ -31,20 +31,20 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 GWorkspace is a workspace and file manager for GNUstep.
 
-%description -l pl
-GWorkspace to zarz±dca biurek i plików dla GNUstepa.
+%description -l pl.UTF-8
+GWorkspace to zarzÄ…dca biurek i plikÃ³w dla GNUstepa.
 
 %package devel
 Summary:	Header files for GWorkspace
-Summary(pl):	Pliki nag³ówkowe GWorkspace
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe GWorkspace
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files for GWorkspace.
 
-%description devel -l pl
-Pliki nag³ówkowe GWorkspace.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe GWorkspace.
 
 %prep
 %setup -q
