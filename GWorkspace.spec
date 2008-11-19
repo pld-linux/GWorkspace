@@ -1,32 +1,17 @@
 Summary:	Workspace manager for GNUstep
 Summary(pl.UTF-8):	Zarządca biurek dla GNUstepa
 Name:		GWorkspace
-Version:	0.6.5
-Release:	6
+Version:	0.8.6
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://www.gnustep.it/enrico/gworkspace/gworkspace-%{version}.tar.gz
-# Source0-md5:	bef75bb09fc11b7c437bfe8abeb0c602
-Patch0:		%{name}-link.patch
+# Source0-md5:	16dc6b077517b60897cc0d057bb803f5
+#Patch0: %{name}-link.patch
 Patch1:		%{name}-initWithArguments.patch
-Patch2:		%{name}-make.patch
 URL:		http://www.gnustep.it/enrico/gworkspace/
 BuildRequires:	gnustep-gui-devel >= 0.8.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define         _prefix         /usr/%{_lib}/GNUstep
-
-%define		libcombo	gnu-gnu-gnu
-%define		gsos		linux-gnu
-%ifarch %{ix86}
-%define		gscpu		ix86
-%else
-# also s/alpha.*/alpha/, but we use only "alpha" arch for now
-%define		gscpu		%(echo %{_target_cpu} | sed -e 's/amd64/x86_64/;s/ppc/powerpc/')
-%endif
-
-%define		gstriple	%{gscpu}/%{gsos}/%{libcombo}
-%define		gsservicedir	%{_prefix}/System/Library/Services
 
 %description
 GWorkspace is a workspace and file manager for GNUstep.
@@ -48,26 +33,28 @@ Pliki nagłówkowe GWorkspace.
 
 %prep
 %setup -q
-%patch0 -p1
+#%patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 find . -type d -name CVS | xargs rm -rf
 
 %build
 %configure
-. %{_prefix}/System/Library/Makefiles/GNUstep.sh
+export GNUSTEP_MAKEFILES=%{_datadir}/GNUstep/Makefiles
+export GNUSTEP_FLATTENED=yes
 %{__make} \
-	debug=no \
 	OPTFLAG="%{rpmcflags}" \
+	GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
 	messages=yes
 
 %install
 rm -rf $RPM_BUILD_ROOT
-. %{_prefix}/System/Library/Makefiles/GNUstep.sh
+export GNUSTEP_MAKEFILES=%{_datadir}/GNUstep/Makefiles
+export GNUSTEP_FLATTENED=yes
 
-%{__make} install debug=no \
-	GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{_prefix}/System
+%{__make} install \
+	GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -77,142 +64,154 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc TODO 
-
-%dir %{_prefix}/System/Applications/Desktop.app
-%attr(755,root,root) %dir %{_prefix}/System/Applications/Desktop.app/Desktop
-%dir %{_prefix}/System/Applications/Desktop.app/Resources
-%{_prefix}/System/Applications/Desktop.app/Resources/*.desktop
-%{_prefix}/System/Applications/Desktop.app/Resources/*.plist
-%{_prefix}/System/Applications/Desktop.app/Resources/*.tiff
-%{_prefix}/System/Applications/Desktop.app/Resources/English.lproj
-%dir %{_prefix}/System/Applications/Desktop.app/%{gscpu}
-%dir %{_prefix}/System/Applications/Desktop.app/%{gscpu}/%{gsos}
-%dir %{_prefix}/System/Applications/Desktop.app/%{gscpu}/%{gsos}/%{libcombo}
-%attr(755,root,root) %{_prefix}/System/Applications/Desktop.app/%{gstriple}/Desktop
-%{_prefix}/System/Applications/Desktop.app/%{gstriple}/*.openapp
-
-%dir %{_prefix}/System/Applications/Finder.app
-%attr(755,root,root) %dir %{_prefix}/System/Applications/Finder.app/Finder
-%dir %{_prefix}/System/Applications/Finder.app/Resources
-%{_prefix}/System/Applications/Finder.app/Resources/*.desktop
-%{_prefix}/System/Applications/Finder.app/Resources/*.plist
-%{_prefix}/System/Applications/Finder.app/Resources/*.tiff
-%{_prefix}/System/Applications/Finder.app/Resources/English.lproj
-%dir %{_prefix}/System/Applications/Finder.app/Resources/*.finder
-%{_prefix}/System/Applications/Finder.app/Resources/*.finder/Resources
-%attr(755,root,root) %{_prefix}/System/Applications/Finder.app/Resources/*.finder/%{gscpu}
-%dir %{_prefix}/System/Applications/Finder.app/%{gscpu}
-%dir %{_prefix}/System/Applications/Finder.app/%{gscpu}/%{gsos}
-%dir %{_prefix}/System/Applications/Finder.app/%{gscpu}/%{gsos}/%{libcombo}
-%attr(755,root,root) %{_prefix}/System/Applications/Finder.app/%{gstriple}/Finder
-%{_prefix}/System/Applications/Finder.app/%{gstriple}/*.openapp
-
-%dir %{_prefix}/System/Applications/GWorkspace.app
-%attr(755,root,root) %{_prefix}/System/Applications/GWorkspace.app/GWorkspace
-%dir %{_prefix}/System/Applications/GWorkspace.app/Resources
-%{_prefix}/System/Applications/GWorkspace.app/Resources/*.desktop
-%{_prefix}/System/Applications/GWorkspace.app/Resources/*.plist
-%{_prefix}/System/Applications/GWorkspace.app/Resources/*.tiff
-#%{_prefix}/System/Applications/GWorkspace.app/Resources/*.gorm
-%lang(nl) %{_prefix}/System/Applications/GWorkspace.app/Resources/Dutch.lproj
-%{_prefix}/System/Applications/GWorkspace.app/Resources/English.lproj
-%lang(fr) %{_prefix}/System/Applications/GWorkspace.app/Resources/French.lproj
-%lang(de) %{_prefix}/System/Applications/GWorkspace.app/Resources/German.lproj
-%lang(it) %{_prefix}/System/Applications/GWorkspace.app/Resources/Italian.lproj
-%lang(pt) %{_prefix}/System/Applications/GWorkspace.app/Resources/Portuguese.lproj
-%lang(ro) %{_prefix}/System/Applications/GWorkspace.app/Resources/Romanian.lproj
-%lang(es) %{_prefix}/System/Applications/GWorkspace.app/Resources/Spanish.lproj
-%dir %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer
-%dir %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources
-%{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/Resources/English.lproj/*.gorm
-%{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/*.plist
-%{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/*.tiff
-%{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/Resources/English.lproj
-%{_prefix}/System/Library/Bundles/*.viewer/Resources/Resources/English.lproj/*.gorm
-%attr(755,root,root) %{_prefix}/System/Applications/GWorkspace.app/Resources/*.viewer/%{gscpu}
-%dir %{_prefix}/System/Applications/GWorkspace.app/%{gscpu}
-%dir %{_prefix}/System/Applications/GWorkspace.app/%{gscpu}/%{gsos}
-%dir %{_prefix}/System/Applications/GWorkspace.app/%{gstriple}
-%attr(755,root,root) %{_prefix}/System/Applications/GWorkspace.app/%{gstriple}/GWorkspace
-%{_prefix}/System/Applications/GWorkspace.app/%{gstriple}/*.openapp
-
-%dir %{_prefix}/System/Applications/Inspector.app
-%attr(755,root,root) %dir %{_prefix}/System/Applications/Inspector.app/Inspector
-%dir %{_prefix}/System/Applications/Inspector.app/Resources
-%{_prefix}/System/Applications/Inspector.app/Resources/*.desktop
-%{_prefix}/System/Applications/Inspector.app/Resources/*.plist
-%{_prefix}/System/Applications/Inspector.app/Resources/*.tiff
-%{_prefix}/System/Applications/Inspector.app/Resources/English.lproj
-%dir %{_prefix}/System/Applications/Inspector.app/Resources/*.inspector
-%{_prefix}/System/Applications/Inspector.app/Resources/*.inspector/Resources
-%attr(755,root,root) %{_prefix}/System/Applications/Inspector.app/Resources/*.inspector/%{gscpu}
-%dir %{_prefix}/System/Applications/Inspector.app/%{gscpu}
-%dir %{_prefix}/System/Applications/Inspector.app/%{gscpu}/%{gsos}
-%dir %{_prefix}/System/Applications/Inspector.app/%{gscpu}/%{gsos}/%{libcombo}
-%attr(755,root,root) %{_prefix}/System/Applications/Inspector.app/%{gstriple}/Inspector
-%{_prefix}/System/Applications/Inspector.app/%{gstriple}/*.openapp
-
-%dir %{_prefix}/System/Applications/Operation.app
-%attr(755,root,root) %dir %{_prefix}/System/Applications/Operation.app/Operation
-%dir %{_prefix}/System/Applications/Operation.app/Resources
-%{_prefix}/System/Applications/Operation.app/Resources/*.desktop
-%{_prefix}/System/Applications/Operation.app/Resources/*.plist
-%{_prefix}/System/Applications/Operation.app/Resources/*.tiff
-%{_prefix}/System/Applications/Operation.app/Resources/English.lproj
-%dir %{_prefix}/System/Applications/Operation.app/%{gscpu}
-%dir %{_prefix}/System/Applications/Operation.app/%{gscpu}/%{gsos}
-%dir %{_prefix}/System/Applications/Operation.app/%{gscpu}/%{gsos}/%{libcombo}
-%attr(755,root,root) %{_prefix}/System/Applications/Operation.app/%{gstriple}/Operation
-%{_prefix}/System/Applications/Operation.app/%{gstriple}/*.openapp
-
-%dir %{_prefix}/System/Library/Bundles/*.inspector
-%attr(755,root,root) %{_prefix}/System/Library/Bundles/*.inspector/%{gscpu}
-%{_prefix}/System/Library/Bundles/*.inspector/Resources
-%dir %{_prefix}/System/Library/Bundles/*.finder
-%{_prefix}/System/Library/Bundles/*.finder/Resources
-%attr(755,root,root) %{_prefix}/System/Library/Bundles/*.finder/%{gscpu}
-%dir %{_prefix}/System/Library/Bundles/*.thumb
-%{_prefix}/System/Library/Bundles/*.thumb/Resources
-%attr(755,root,root) %{_prefix}/System/Library/Bundles/*.thumb/%{gscpu}
-%dir %{_prefix}/System/Library/Bundles/*.viewer
-%dir %{_prefix}/System/Library/Bundles/*.viewer/Resources
-%{_prefix}/System/Library/Bundles/*.viewer/Resources/*.plist
-%{_prefix}/System/Library/Bundles/*.viewer/Resources/*.tiff
-%{_prefix}/System/Library/Bundles/*.viewer/Resources/English.lproj
-%attr(755,root,root) %{_prefix}/System/Library/Bundles/*.viewer/%{gscpu}
-
-%dir %{_prefix}/System/Library/Frameworks/FSNode.framework
-%{_prefix}/System/Library/Frameworks/FSNode.framework/Resources
-%dir %{_prefix}/System/Library/Frameworks/FSNode.framework/Versions
-%{_prefix}/System/Library/Frameworks/FSNode.framework/Versions/Current
-%dir %{_prefix}/System/Library/Frameworks/FSNode.framework/Versions/A
-%{_prefix}/System/Library/Frameworks/FSNode.framework/Versions/A/Resources/*.plist
-%{_prefix}/System/Library/Frameworks/FSNode.framework/Versions/A/Resources/*.tiff
-%{_prefix}/System/Library/Frameworks/FSNode.framework/Versions/A/Resources/English.lproj
-%attr(755,root,root) %{_prefix}/System/Library/Frameworks/FSNode.framework/Versions/A/%{gscpu}
-
-%attr(755,root,root) %{_prefix}/System/Library/Libraries/%{gstriple}/lib*.so.*
-
-%dir %{gsservicedir}/thumbnailer.service
-%dir %{gsservicedir}/thumbnailer.service/%{gscpu}
-%dir %{gsservicedir}/thumbnailer.service/%{gscpu}/%{gsos}
-%dir %{gsservicedir}/thumbnailer.service/%{gscpu}/%{gsos}/%{libcombo}
-%attr(755,root,root) %{gsservicedir}/thumbnailer.service/%{gstriple}/*
-%dir %{gsservicedir}/thumbnailer.service/Resources
-%{gsservicedir}/*.service/Resources/*.plist
-%dir %{gsservicedir}/thumbnailer.service/Resources/*.thumb
-%dir %{gsservicedir}/thumbnailer.service/Resources/*.thumb/%{gscpu}
-%dir %{gsservicedir}/thumbnailer.service/Resources/*.thumb/%{gscpu}/%{gsos}
-%dir %{gsservicedir}/thumbnailer.service/Resources/*.thumb/%{gscpu}/%{gsos}/%{libcombo}
-%attr(755,root,root) %{gsservicedir}/thumbnailer.service/Resources/*.thumb/%{gstriple}/*
-%dir %{gsservicedir}/thumbnailer.service/Resources/*.thumb/Resources
-%{gsservicedir}/thumbnailer.service/Resources/ImageThumbnailer.thumb/Resources/*.plist
-
-%attr(755,root,root) %{_prefix}/System/Tools/%{gstriple}/*
+%doc TODO
+%attr(755,root,root) %{_bindir}/GWorkspace
+%attr(755,root,root) %{_bindir}/Recycler
+%attr(755,root,root) %{_bindir}/ddbd
+%attr(755,root,root) %{_bindir}/fswatcher
+%attr(755,root,root) %{_bindir}/lsfupdater
+%attr(755,root,root) %{_bindir}/resizer
+%attr(755,root,root) %{_bindir}/searchtool
+%attr(755,root,root) %{_bindir}/wopen
+%attr(755,root,root) %{_libdir}/GNUstep/Applications/GWorkspace.app/GWorkspace
+%dir %{_libdir}/GNUstep/Applications/GWorkspace.app/Resources/
+%{_libdir}/GNUstep/Applications/GWorkspace.app/Resources/*.tiff
+%{_libdir}/GNUstep/Applications/GWorkspace.app/Resources/*.lproj
+%{_libdir}/GNUstep/Applications/GWorkspace.app/Resources/*.desktop
+%{_libdir}/GNUstep/Applications/GWorkspace.app/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Applications/Recycler.app/Recycler
+%{_libdir}/GNUstep/Applications/Recycler.app/Resources/*.lproj
+%{_libdir}/GNUstep/Applications/Recycler.app/Resources/*.plist
+%{_libdir}/GNUstep/Applications/Recycler.app/Resources/*.desktop
+%{_libdir}/GNUstep/Applications/Recycler.app/Resources/*.tiff
+%dir %{_libdir}/GNUstep/Frameworks/Operation.framework
+%dir %{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*
+%{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/Current
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*/Operation
+%dir %{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*/Resources
+%{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*/Resources/*.lproj
+%{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*/Resources/*.plist
+%{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*/Resources/*.tiff
+%{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*/libOperation.so
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/AppViewer.inspector/AppViewer
+%{_libdir}/GNUstep/Bundles/AppViewer.inspector/Resources/*.lproj
+%{_libdir}/GNUstep/Bundles/AppViewer.inspector/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/FModuleAnnotations.finder/FModuleAnnotations
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/FModuleContents.finder/FModuleContents
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/FModuleCrDate.finder/FModuleCrDate
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/FModuleKind.finder/FModuleKind
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/FModuleModDate.finder/FModuleModDate
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/FModuleName.finder/FModuleName
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/FModuleOwner.finder/FModuleOwner
+%{_libdir}/GNUstep/Bundles/*.finder/Resources/*.gorm
+%{_libdir}/GNUstep/Bundles/*.finder/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/FModuleSize.finder/FModuleSize
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/FolderViewer.inspector/FolderViewer
+%dir %{_libdir}/GNUstep/Bundles/FolderViewer.inspector/Resources
+%{_libdir}/GNUstep/Bundles/FolderViewer.inspector/Resources/*.lproj
+%{_libdir}/GNUstep/Bundles/FolderViewer.inspector/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/IBViewViewer.inspector/IBViewViewer
+%dir %{_libdir}/GNUstep/Bundles/IBViewViewer.inspector/Resources
+%{_libdir}/GNUstep/Bundles/IBViewViewer.inspector/Resources/*.lproj
+%{_libdir}/GNUstep/Bundles/IBViewViewer.inspector/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/ImageThumbnailer.thumb/ImageThumbnailer
+%dir %{_libdir}/GNUstep/Bundles/ImageThumbnailer.thumb/Resources
+%{_libdir}/GNUstep/Bundles/ImageThumbnailer.thumb/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/ImageViewer.inspector/ImageViewer
+%dir %{_libdir}/GNUstep/Bundles/ImageViewer.inspector/Resources
+%{_libdir}/GNUstep/Bundles/ImageViewer.inspector/Resources/*.lproj
+%{_libdir}/GNUstep/Bundles/ImageViewer.inspector/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/MDModuleAnnotations.mdm/MDModuleAnnotations
+%dir %{_libdir}/GNUstep/Bundles/MDModuleAnnotations.mdm/Resources
+%{_libdir}/GNUstep/Bundles/MDModuleAnnotations.mdm/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/NSColorViewer.inspector/NSColorViewer
+%dir %{_libdir}/GNUstep/Bundles/NSColorViewer.inspector/Resources
+%{_libdir}/GNUstep/Bundles/NSColorViewer.inspector/Resources/*.lproj
+%{_libdir}/GNUstep/Bundles/NSColorViewer.inspector/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/NSRTFViewer.inspector/NSRTFViewer
+%dir %{_libdir}/GNUstep/Bundles/NSRTFViewer.inspector/Resources
+%{_libdir}/GNUstep/Bundles/NSRTFViewer.inspector/Resources/*.lproj
+%{_libdir}/GNUstep/Bundles/NSRTFViewer.inspector/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/NSTIFFViewer.inspector/NSTIFFViewer
+%dir %{_libdir}/GNUstep/Bundles/NSTIFFViewer.inspector/Resources
+%{_libdir}/GNUstep/Bundles/NSTIFFViewer.inspector/Resources/*.lproj
+%{_libdir}/GNUstep/Bundles/NSTIFFViewer.inspector/Resources/*.plist
+%dir %{_libdir}/GNUstep/Bundles/Role.extinfo/Resources
+%{_libdir}/GNUstep/Bundles/Role.extinfo/Resources/*.plist
+%{_libdir}/GNUstep/Bundles/Role.extinfo/Role
+%dir %{_libdir}/GNUstep/Bundles/RtfViewer.inspector/Resources
+%{_libdir}/GNUstep/Bundles/RtfViewer.inspector/Resources/*.lproj
+%{_libdir}/GNUstep/Bundles/RtfViewer.inspector/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/RtfViewer.inspector/RtfViewer
+%dir %{_libdir}/GNUstep/Bundles/SoundViewer.inspector/Resources
+%{_libdir}/GNUstep/Bundles/SoundViewer.inspector/Resources/*.lproj
+%{_libdir}/GNUstep/Bundles/SoundViewer.inspector/Resources/*.plist
+%{_libdir}/GNUstep/Bundles/SoundViewer.inspector/Resources/*.tiff
+%attr(755,root,root) %{_libdir}/GNUstep/Bundles/SoundViewer.inspector/SoundViewer
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/FSNode.framework/FSNode
+%{_libdir}/GNUstep/Frameworks/FSNode.framework/Resources
+%dir %{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*
+%dir %{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*/FSNode
+%dir %{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*/Resources
+%{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*/Resources/*.tiff
+%{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*/Resources/*.lproj
+%{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*/libFSNode.so
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*/libFSNode.so.0
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*/libFSNode.so.0.1.0
+%{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/Current
+%{_libdir}/GNUstep/Frameworks/FSNode.framework/libFSNode.so
+%{_libdir}/GNUstep/Frameworks/Inspector.framework/Inspector
+%{_libdir}/GNUstep/Frameworks/Inspector.framework/Resources
+%dir %{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*
+%dir %{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*
+%{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/Current
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*/Inspector
+%dir %{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*/Resources
+%{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*/Resources/*.tiff
+%{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*/Resources/*.lproj
+%{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*/Resources/*.plist
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*/libInspector.so
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*/libInspector.so.0
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*/libInspector.so.*.*.*
+%{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*
+%{_libdir}/GNUstep/Frameworks/Inspector.framework/libInspector.so
+%{_libdir}/GNUstep/Frameworks/Operation.framework/Operation
+%{_libdir}/GNUstep/Frameworks/Operation.framework/Resources
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*/libOperation.so.1
+%attr(755,root,root) %{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*/libOperation.so.1.0.0
+%{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*
+%{_libdir}/GNUstep/Frameworks/Operation.framework/libOperation.so
+%{_libdir}/GNUstep/Services/thumbnailer.service/Resources/*.plist
+%dir %{_libdir}/GNUstep/Services/thumbnailer.service
+%attr(755,root,root) %{_libdir}/GNUstep/Services/thumbnailer.service/thumbnailer
+%{_libdir}/libDBKit.so
+%attr(755,root,root) %{_libdir}/libDBKit.so.0.0.1
+%{_libdir}/libFSNode.so
+%attr(755,root,root) %{_libdir}/libFSNode.so.0.1.0
+%{_libdir}/libInspector.so
+%attr(755,root,root) %{_libdir}/libInspector.so.0.1.0
+%{_libdir}/libOperation.so
+%attr(755,root,root) %{_libdir}/libOperation.so.1.0.0
 
 %files devel
 %defattr(644,root,root,755)
-%{_prefix}/System/Library/Frameworks/FSNode.framework/Versions/A/Headers
-%attr(755,root,root) %{_prefix}/System/Library/Libraries/%{gstriple}/lib*.so
-%{_prefix}/System/Library/Headers/%{libcombo}/GWorkspace
+%dir %{_includedir}/DBKit
+%{_includedir}/DBKit/DBKBTree.h
+%{_includedir}/DBKit/DBKBTreeNode.h
+%{_includedir}/DBKit/DBKFixLenRecordsFile.h
+%{_includedir}/DBKit/DBKPathsTree.h
+%{_includedir}/DBKit/DBKVarLenRecordsFile.h
+%{_includedir}/FSNode
+%{_includedir}/Inspector
+%{_includedir}/Operation
+%dir %{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*/Headers
+%{_libdir}/GNUstep/Frameworks/FSNode.framework/Versions/[0-9]*/Headers/*.h
+%{_libdir}/GNUstep/Frameworks/Inspector.framework/Headers
+%dir %{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*/Headers
+%{_libdir}/GNUstep/Frameworks/Inspector.framework/Versions/[0-9]*/Headers/*.h
+%{_libdir}/GNUstep/Frameworks/Operation.framework/Headers
+%dir %{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*/Headers
+%{_libdir}/GNUstep/Frameworks/Operation.framework/Versions/[0-9]*/Headers/*.h
+%{_libdir}/GNUstep/Frameworks/FSNode.framework/Headers
