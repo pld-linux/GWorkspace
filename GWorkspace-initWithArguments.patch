@@ -1,91 +1,25 @@
-diff -ur orig-GWorkspace-0.6.5/ClipBook/main.m GWorkspace-0.6.5/ClipBook/main.m
---- orig-GWorkspace-0.6.5/ClipBook/main.m	2003-10-28 05:46:19.000000000 -0700
-+++ GWorkspace-0.6.5/ClipBook/main.m	2004-11-09 02:50:21.897824882 -0700
-@@ -33,8 +33,15 @@
+diff -Nur GWorkspace-0.8.6.orig/GWMetadata/MDFinder/main.m GWorkspace-0.8.6.initWithArguments/GWMetadata/MDFinder/main.m
+--- GWorkspace-0.8.6.orig/GWMetadata/MDFinder/main.m	2007-01-07 04:39:04.000000000 -0700
++++ GWorkspace-0.8.6.initWithArguments/GWMetadata/MDFinder/main.m	2008-11-19 22:03:02.000000000 -0700
+@@ -29,7 +29,13 @@
  int main(int argc, char **argv, char **env)
  {
  	CREATE_AUTORELEASE_POOL (pool);
--  ClipBook *clipbook = [ClipBook clipbook];
 -	NSApplication *app = [NSApplication sharedApplication];
-+  ClipBook *clipbook;
 +	NSApplication *app;
-+
-+#ifdef GS_PASS_ARGUMENTS
-+  [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
-+#endif
-+ 
-+	clipbook	= [ClipBook clipbook];
-+	app	= [NSApplication sharedApplication];
-   
- 	createMenu();
- 	
-diff -ur orig-GWorkspace-0.6.5/Desktop/main.m GWorkspace-0.6.5/Desktop/main.m
---- orig-GWorkspace-0.6.5/Desktop/main.m	2004-05-26 06:07:30.000000000 -0600
-+++ GWorkspace-0.6.5/Desktop/main.m	2004-11-09 02:50:21.897824882 -0700
-@@ -32,8 +32,15 @@
- int main(int argc, char **argv, char **env)
- {
- 	CREATE_AUTORELEASE_POOL (pool);
--  Desktop *desktop = [Desktop desktop];
--	NSApplication *app = [NSApplication sharedApplication];
-+  Desktop *desktop;
-+	NSApplication *app;
-+
 +#ifdef GS_PASS_ARGUMENTS
 +  [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
 +#endif
 +
-+	desktop = [Desktop desktop];
-+	app = [NSApplication sharedApplication];
- 
- 	createMenu();
- 
-diff -ur orig-GWorkspace-0.6.5/Finder/main.m GWorkspace-0.6.5/Finder/main.m
---- orig-GWorkspace-0.6.5/Finder/main.m	2004-04-13 17:23:41.000000000 -0600
-+++ GWorkspace-0.6.5/Finder/main.m	2004-11-09 02:50:21.898824742 -0700
-@@ -35,8 +35,15 @@
- int main(int argc, char **argv, char **env)
- {
- 	CREATE_AUTORELEASE_POOL (pool);
--  Finder *finder = [Finder finder];
--	NSApplication *app = [NSApplication sharedApplication];
-+  Finder *finder;
-+	NSApplication *app;
++  app = [NSApplication sharedApplication];
 +
-+#ifdef GS_PASS_ARGUMENTS
-+  [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
-+#endif
-+
-+	finder = [Finder finder];
-+	app = [NSApplication sharedApplication];
-   
- #ifdef GNUSTEP
- 	createMenu();
-diff -ur orig-GWorkspace-0.6.5/GWNet/main.m GWorkspace-0.6.5/GWNet/main.m
---- orig-GWorkspace-0.6.5/GWNet/main.m	2004-01-20 06:21:31.000000000 -0700
-+++ GWorkspace-0.6.5/GWNet/main.m	2004-11-09 02:50:21.898824742 -0700
-@@ -35,8 +35,15 @@
- int main(int argc, char **argv, char **env)
- {
- 	CREATE_AUTORELEASE_POOL (pool);
--  GWNet *gwnet = [GWNet gwnet];
--	NSApplication *app = [NSApplication sharedApplication];
-+  GWNet *gwnet;
-+	NSApplication *app;
-+
-+#ifdef GS_PASS_ARGUMENTS
-+  [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
-+#endif
-+	
-+	gwnet = [GWNet gwnet];
-+	app = [NSApplication sharedApplication];
-   
- #ifdef GNUSTEP
- 	createMenu();
-diff -ur orig-GWorkspace-0.6.5/GWorkspace/main.m GWorkspace-0.6.5/GWorkspace/main.m
---- orig-GWorkspace-0.6.5/GWorkspace/main.m	2004-05-17 04:42:29.000000000 -0600
-+++ GWorkspace-0.6.5/GWorkspace/main.m	2004-11-09 02:50:21.898824742 -0700
-@@ -38,8 +38,15 @@
+   	
+   [app setDelegate: [MDFinder mdfinder]];    
+ 	[app run];
+diff -Nur GWorkspace-0.8.6.orig/GWorkspace/main.m GWorkspace-0.8.6.initWithArguments/GWorkspace/main.m
+--- GWorkspace-0.8.6.orig/GWorkspace/main.m	2006-06-26 05:34:07.000000000 -0600
++++ GWorkspace-0.8.6.initWithArguments/GWorkspace/main.m	2008-11-19 22:03:02.000000000 -0700
+@@ -30,8 +30,15 @@
  int main(int argc, char **argv, char **env)
  {
  	CREATE_AUTORELEASE_POOL (pool);
@@ -101,112 +35,174 @@ diff -ur orig-GWorkspace-0.6.5/GWorkspace/main.m GWorkspace-0.6.5/GWorkspace/mai
 +	gw	= [GWorkspace gworkspace];
 +	app = [NSApplication sharedApplication];
    
- #ifdef GNUSTEP
- 	createMenu();
-diff -ur orig-GWorkspace-0.6.5/Inspector/main.m GWorkspace-0.6.5/Inspector/main.m
---- orig-GWorkspace-0.6.5/Inspector/main.m	2004-02-19 18:03:49.000000000 -0700
-+++ GWorkspace-0.6.5/Inspector/main.m	2004-11-09 02:50:21.898824742 -0700
-@@ -35,8 +35,15 @@
+   [app setDelegate: gw];    
+ 	[app run];
+diff -Nur GWorkspace-0.8.6.orig/GWorkspace/main.m.orig GWorkspace-0.8.6.initWithArguments/GWorkspace/main.m.orig
+--- GWorkspace-0.8.6.orig/GWorkspace/main.m.orig	1969-12-31 17:00:00.000000000 -0700
++++ GWorkspace-0.8.6.initWithArguments/GWorkspace/main.m.orig	2008-11-19 22:03:02.000000000 -0700
+@@ -0,0 +1,42 @@
++/* main.m
++ *  
++ * Copyright (C) 2003 Free Software Foundation, Inc.
++ *
++ * Author: Enrico Sersale <enrico@imago.ro>
++ * Date: August 2001
++ *
++ * This file is part of the GNUstep GWorkspace application
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02111 USA.
++ */
++
++#include <Foundation/Foundation.h>
++#include <AppKit/AppKit.h>
++#include "GWorkspace.h"
++#include "GNUstep.h"
++  
++int main(int argc, char **argv, char **env)
++{
++	CREATE_AUTORELEASE_POOL (pool);
++  GWorkspace *gw = [GWorkspace gworkspace];
++	NSApplication *app = [NSApplication sharedApplication];
++  
++  [app setDelegate: gw];    
++	[app run];
++	RELEASE (pool);
++  
++  return 0;
++}
++
+diff -Nur GWorkspace-0.8.6.orig/Recycler/main.m GWorkspace-0.8.6.initWithArguments/Recycler/main.m
+--- GWorkspace-0.8.6.orig/Recycler/main.m	2006-06-20 10:53:53.000000000 -0600
++++ GWorkspace-0.8.6.initWithArguments/Recycler/main.m	2008-11-19 22:03:02.000000000 -0700
+@@ -32,6 +32,9 @@
  int main(int argc, char **argv, char **env)
  {
  	CREATE_AUTORELEASE_POOL (pool);
--  Inspector *inspector = [Inspector inspector];
--	NSApplication *app = [NSApplication sharedApplication];
-+  Inspector *inspector;
-+	NSApplication *app;
-+
 +#ifdef GS_PASS_ARGUMENTS
 +  [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
 +#endif
-+
-+	inspector = [Inspector inspector];
-+	app	= [NSApplication sharedApplication];
-   
- #ifdef GNUSTEP
- 	createMenu();
-diff -ur orig-GWorkspace-0.6.5/Operation/main.m GWorkspace-0.6.5/Operation/main.m
---- orig-GWorkspace-0.6.5/Operation/main.m	2004-03-08 06:09:17.000000000 -0700
-+++ GWorkspace-0.6.5/Operation/main.m	2004-11-09 02:50:21.899824603 -0700
-@@ -35,8 +35,15 @@
- int main(int argc, char **argv, char **env)
+   Recycler *recycler = [Recycler recycler];
+ 	NSApplication *app = [NSApplication sharedApplication];
+ 
+diff -Nur GWorkspace-0.8.6.orig/Tools/ddbd/ddbd.m GWorkspace-0.8.6.initWithArguments/Tools/ddbd/ddbd.m
+--- GWorkspace-0.8.6.orig/Tools/ddbd/ddbd.m	2007-02-07 05:36:10.000000000 -0700
++++ GWorkspace-0.8.6.initWithArguments/Tools/ddbd/ddbd.m	2008-11-19 22:03:02.000000000 -0700
+@@ -496,9 +496,13 @@
+ }
+ 
+ 
+-int main(int argc, char** argv)
++int main(int argc, char** argv, char** env)
  {
- 	CREATE_AUTORELEASE_POOL (pool);
--  Operation *operation = [Operation operation];
--	NSApplication *app = [NSApplication sharedApplication];
-+  Operation *operation;
-+	NSApplication *app;
+   CREATE_AUTORELEASE_POOL(pool);
++#ifdef GS_PASS_ARGUMENTS
++  [NSProcessInfo initializeWithArguments: argv count: argc environment:
++env];
++#endif
+   NSProcessInfo *info = [NSProcessInfo processInfo];
+   NSMutableArray *args = AUTORELEASE ([[info arguments] mutableCopy]);
+   static BOOL	is_daemon = NO;
+diff -Nur GWorkspace-0.8.6.orig/Tools/fswatcher/fswatcher-inotify.m GWorkspace-0.8.6.initWithArguments/Tools/fswatcher/fswatcher-inotify.m
+--- GWorkspace-0.8.6.orig/Tools/fswatcher/fswatcher-inotify.m	2007-03-07 17:57:26.000000000 -0700
++++ GWorkspace-0.8.6.initWithArguments/Tools/fswatcher/fswatcher-inotify.m	2008-11-19 22:03:02.000000000 -0700
+@@ -1041,6 +1041,10 @@
+ int main(int argc, char** argv)
+ {
+   CREATE_AUTORELEASE_POOL(pool);
++#ifdef GS_PASS_ARGUMENTS
++  [NSProcessInfo initializeWithArguments: argv count: argc environment:
++env];
++#endif
+   NSProcessInfo *info = [NSProcessInfo processInfo];
+   NSMutableArray *args = AUTORELEASE ([[info arguments] mutableCopy]);
+   static BOOL	is_daemon = NO;
+diff -Nur GWorkspace-0.8.6.orig/Tools/fswatcher/fswatcher.m GWorkspace-0.8.6.initWithArguments/Tools/fswatcher/fswatcher.m
+--- GWorkspace-0.8.6.orig/Tools/fswatcher/fswatcher.m	2007-02-16 11:41:00.000000000 -0700
++++ GWorkspace-0.8.6.initWithArguments/Tools/fswatcher/fswatcher.m	2008-11-19 22:03:02.000000000 -0700
+@@ -825,9 +825,13 @@
+ @end
+ 
+ 
+-int main(int argc, char** argv)
++int main(int argc, char** argv, char** env)
+ {
+   CREATE_AUTORELEASE_POOL(pool);
++#ifdef GS_PASS_ARGUMENTS
++  [NSProcessInfo initializeWithArguments: argv count: argc environment:
++env];
++#endif
+   NSProcessInfo *info = [NSProcessInfo processInfo];
+   NSMutableArray *args = AUTORELEASE ([[info arguments] mutableCopy]);
+   static BOOL	is_daemon = NO;
+diff -Nur GWorkspace-0.8.6.orig/Tools/lsfupdater/lsfupdater.m GWorkspace-0.8.6.initWithArguments/Tools/lsfupdater/lsfupdater.m
+--- GWorkspace-0.8.6.orig/Tools/lsfupdater/lsfupdater.m	2006-10-14 06:15:45.000000000 -0600
++++ GWorkspace-0.8.6.initWithArguments/Tools/lsfupdater/lsfupdater.m	2008-11-19 22:03:02.000000000 -0700
+@@ -1192,9 +1192,14 @@
+ @end
+ 
+ 
+-int main(int argc, char** argv)
++int main(int argc, char** argv, char** env)
+ {
+   CREATE_AUTORELEASE_POOL (pool);
++#ifdef GS_PASS_ARGUMENTS
++  [NSProcessInfo initializeWithArguments: argv count: argc environment:
++env];
++#endif
 +
+   
+   if (argc > 1) {
+     NSString *conname = [NSString stringWithCString: argv[1]];
+diff -Nur GWorkspace-0.8.6.orig/Tools/searchtool/searchtool.m GWorkspace-0.8.6.initWithArguments/Tools/searchtool/searchtool.m
+--- GWorkspace-0.8.6.orig/Tools/searchtool/searchtool.m	2006-10-14 06:12:12.000000000 -0600
++++ GWorkspace-0.8.6.initWithArguments/Tools/searchtool/searchtool.m	2008-11-19 22:03:02.000000000 -0700
+@@ -394,9 +394,12 @@
+ @end
+ 
+ 
+-int main(int argc, char** argv)
++int main(int argc, char** argv, char** env)
+ {
+   CREATE_AUTORELEASE_POOL (pool);
 +#ifdef GS_PASS_ARGUMENTS
 +  [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
 +#endif
-+
-+	operation	= [Operation operation];
-+	app	= [NSApplication sharedApplication];
    
- #ifdef GNUSTEP
- 	createMenu();
-diff -ur orig-GWorkspace-0.6.5/Utilities/findfile/findfile.m GWorkspace-0.6.5/Utilities/findfile/findfile.m
---- orig-GWorkspace-0.6.5/Utilities/findfile/findfile.m	2003-09-26 04:25:38.000000000 -0600
-+++ GWorkspace-0.6.5/Utilities/findfile/findfile.m	2004-11-09 02:54:24.510959690 -0700
-@@ -429,11 +429,16 @@
+   if (argc > 1) {
+     NSString *conname = [NSString stringWithCString: argv[1]];
+diff -Nur GWorkspace-0.8.6.orig/Tools/thumbnailer/main.m GWorkspace-0.8.6.initWithArguments/Tools/thumbnailer/main.m
+--- GWorkspace-0.8.6.orig/Tools/thumbnailer/main.m	2006-06-20 10:52:02.000000000 -0600
++++ GWorkspace-0.8.6.initWithArguments/Tools/thumbnailer/main.m	2008-11-19 22:03:02.000000000 -0700
+@@ -654,9 +654,12 @@
  
  @end
  
 -int main(int argc, char** argv)
 +int main(int argc, char** argv, char** env)
  {
- 	FindFile *findfile;
-   
-   CREATE_AUTORELEASE_POOL (pool);
-+
+   CREATE_AUTORELEASE_POOL(pool);
 +#ifdef GS_PASS_ARGUMENTS
 +  [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
 +#endif
-+
- 	findfile = [[FindFile alloc] init];
-   
-   if (findfile) {
-diff -ur orig-GWorkspace-0.6.5/Utilities/fswatcher/fswatcher.m GWorkspace-0.6.5/Utilities/fswatcher/fswatcher.m
---- orig-GWorkspace-0.6.5/Utilities/fswatcher/fswatcher.m	2004-04-14 04:33:21.000000000 -0600
-+++ GWorkspace-0.6.5/Utilities/fswatcher/fswatcher.m	2004-11-09 02:54:08.381211163 -0700
-@@ -625,7 +625,7 @@
- @end
- 
- 
--int main(int argc, char** argv)
-+int main(int argc, char** argv, char** env)
- {
- 	FSWatcher *fsw;
- 
-@@ -641,6 +641,10 @@
- 	  default:
- 	    exit(0);
- 	}
-+
-+#ifdef GS_PASS_ARGUMENTS
-+  [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
-+#endif
-   
-   CREATE_AUTORELEASE_POOL (pool);
- 	fsw = [[FSWatcher alloc] init];
-diff -ur orig-GWorkspace-0.6.5/Utilities/thumbnailer/main.m GWorkspace-0.6.5/Utilities/thumbnailer/main.m
---- orig-GWorkspace-0.6.5/Utilities/thumbnailer/main.m	2003-09-26 04:25:38.000000000 -0600
-+++ GWorkspace-0.6.5/Utilities/thumbnailer/main.m	2004-11-09 02:54:42.041512685 -0700
-@@ -679,6 +679,10 @@
- 	  default:
- 	    exit(0);
- 	}
-+
-+#ifdef GS_PASS_ARGUMENTS
-+  [NSProcessInfo initializeWithArguments: argv count: argc environment: env_c];
-+#endif
-   
-   pool = [NSAutoreleasePool new];
- 	thumbnailer = [[Thumbnailer alloc] init];
-diff -ur orig-GWorkspace-0.6.5/Utilities/wopen/wopen.m GWorkspace-0.6.5/Utilities/wopen/wopen.m
---- orig-GWorkspace-0.6.5/Utilities/wopen/wopen.m	2003-07-12 07:42:09.000000000 -0600
-+++ GWorkspace-0.6.5/Utilities/wopen/wopen.m	2004-11-09 02:54:56.042558347 -0700
-@@ -37,6 +37,10 @@
+   NSProcessInfo *info = [NSProcessInfo processInfo];
+   NSMutableArray *args = AUTORELEASE ([[info arguments] mutableCopy]);
+   static BOOL	is_daemon = NO;
+diff -Nur GWorkspace-0.8.6.orig/Tools/wopen/wopen.m GWorkspace-0.8.6.initWithArguments/Tools/wopen/wopen.m
+--- GWorkspace-0.8.6.orig/Tools/wopen/wopen.m	2006-06-20 10:51:37.000000000 -0600
++++ GWorkspace-0.8.6.initWithArguments/Tools/wopen/wopen.m	2008-11-19 22:03:16.000000000 -0700
+@@ -36,6 +36,10 @@
    NSString *fullPath = nil;
    BOOL isDir = NO;
    id gworkspace = nil;
