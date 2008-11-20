@@ -37,52 +37,6 @@ diff -Nur GWorkspace-0.8.6.orig/GWorkspace/main.m GWorkspace-0.8.6.initWithArgum
    
    [app setDelegate: gw];    
  	[app run];
-diff -Nur GWorkspace-0.8.6.orig/GWorkspace/main.m.orig GWorkspace-0.8.6.initWithArguments/GWorkspace/main.m.orig
---- GWorkspace-0.8.6.orig/GWorkspace/main.m.orig	1969-12-31 17:00:00.000000000 -0700
-+++ GWorkspace-0.8.6.initWithArguments/GWorkspace/main.m.orig	2008-11-19 22:03:02.000000000 -0700
-@@ -0,0 +1,42 @@
-+/* main.m
-+ *  
-+ * Copyright (C) 2003 Free Software Foundation, Inc.
-+ *
-+ * Author: Enrico Sersale <enrico@imago.ro>
-+ * Date: August 2001
-+ *
-+ * This file is part of the GNUstep GWorkspace application
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ * 
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ * 
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02111 USA.
-+ */
-+
-+#include <Foundation/Foundation.h>
-+#include <AppKit/AppKit.h>
-+#include "GWorkspace.h"
-+#include "GNUstep.h"
-+  
-+int main(int argc, char **argv, char **env)
-+{
-+	CREATE_AUTORELEASE_POOL (pool);
-+  GWorkspace *gw = [GWorkspace gworkspace];
-+	NSApplication *app = [NSApplication sharedApplication];
-+  
-+  [app setDelegate: gw];    
-+	[app run];
-+	RELEASE (pool);
-+  
-+  return 0;
-+}
-+
 diff -Nur GWorkspace-0.8.6.orig/Recycler/main.m GWorkspace-0.8.6.initWithArguments/Recycler/main.m
 --- GWorkspace-0.8.6.orig/Recycler/main.m	2006-06-20 10:53:53.000000000 -0600
 +++ GWorkspace-0.8.6.initWithArguments/Recycler/main.m	2008-11-19 22:03:02.000000000 -0700
