@@ -39,12 +39,12 @@ Pliki nagłówkowe GWorkspace.
 find . -type d -name CVS | xargs rm -rf
 
 %build
-%configure
 export GNUSTEP_MAKEFILES=%{_datadir}/GNUstep/Makefiles
 export GNUSTEP_FLATTENED=yes
+export GNUSTEP_INSTALLATION_DOMAIN=SYSTEM
+%configure
 %{__make} \
 	OPTFLAG="%{rpmcflags}" \
-	GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
 	messages=yes
 
 %install
@@ -53,7 +53,6 @@ export GNUSTEP_MAKEFILES=%{_datadir}/GNUstep/Makefiles
 export GNUSTEP_FLATTENED=yes
 
 %{__make} install \
-	GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
